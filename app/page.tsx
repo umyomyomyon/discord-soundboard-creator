@@ -1,4 +1,6 @@
-import { FileDropZone } from "@/components/FileDropZone"
+import dynamic from 'next/dynamic'
+
+const FileDropZone = dynamic(() => import('@/components/FileDropZone'), {ssr: false})
 
 export default function IndexPage() {
   return (

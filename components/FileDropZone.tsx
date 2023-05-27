@@ -1,21 +1,24 @@
 'use client'
 
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { useDropzone, FileWithPath } from 'react-dropzone'
 import { Button } from './ui/button'
+import WaveSurfer from 'wavesurfer.js'
 
-export const FileDropZone: React.FC = () => {
+const FileDropZone: React.FC = () => {
   const [filename, setFilename] = useState<string | null>(null)
+  const [objectURL, setObjectURL] = useState<string | null>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
+  const waveformRef = useRef<HTMLDivElement>(null)
+
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
     if (acceptedFiles.length === 0) return
     if (!audioRef.current) return
     const file = acceptedFiles[0]
-    console.log(file)
     setFilename(file.name)
     const preview = URL.createObjectURL(file)
+    setObjectURL(preview)
     audioRef.current.src = preview
-    console.log(preview)
   }, [])
 
   const handlePlayClick = () => {
@@ -36,6 +39,16 @@ export const FileDropZone: React.FC = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
+  useEffect(() => {
+    if (!waveformRef.current) return
+    const ws = WaveSurfer.create({
+      container: waveformRef.current,
+    })
+    if (objectURL) {
+      ws.load(objectURL)
+    }
+  }, [objectURL])
+
   return (
     <>
       <div {...getRootProps()} className='flex h-[150px] w-full cursor-pointer items-center justify-center rounded-md border border-dashed text-sm caret-transparent'>
@@ -48,6 +61,7 @@ export const FileDropZone: React.FC = () => {
         }
       </div>
       <audio ref={audioRef} />
+      <div ref={waveformRef} />
       <div className='h-6'>
         {filename && <p>{filename}</p>}
       </div>
@@ -57,3 +71,5 @@ export const FileDropZone: React.FC = () => {
     </>
   )
 }
+
+export default FileDropZone;
