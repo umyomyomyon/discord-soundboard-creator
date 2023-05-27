@@ -10,6 +10,7 @@ const FileDropZone: React.FC = () => {
   const [objectURL, setObjectURL] = useState<string | null>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
   const waveformRef = useRef<HTMLDivElement>(null)
+  const waveHeight = 150
 
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
     if (acceptedFiles.length === 0) return
@@ -43,6 +44,10 @@ const FileDropZone: React.FC = () => {
     if (!waveformRef.current) return
     const ws = WaveSurfer.create({
       container: waveformRef.current,
+      interact: false,
+      cursorColor: 'white',
+      normalize: true,
+      height: waveHeight,
     })
     if (objectURL) {
       ws.load(objectURL)
@@ -61,7 +66,9 @@ const FileDropZone: React.FC = () => {
         }
       </div>
       <audio ref={audioRef} />
-      <div ref={waveformRef} />
+      <div className='w-full'>
+        {objectURL && <div ref={waveformRef} />}
+      </div>
       <div className='h-6'>
         {filename && <p>{filename}</p>}
       </div>
