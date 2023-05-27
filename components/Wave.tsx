@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import WaveSurfer from 'wavesurfer.js'
+import RegionsPlugin, { Region } from 'wavesurfer.js/src/plugin/regions'
 import { Button } from "./ui/button";
 
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
 export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
   const waveformRef = useRef<HTMLDivElement>(null)
   const wsRef = useRef<WaveSurfer | null>(null)
+  const [regions, setRegions] = useState<Region[]>([])
 
   useEffect(() => {
     if (!waveformRef.current) return
@@ -18,7 +20,15 @@ export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
       cursorColor: 'white',
       normalize: true,
       height,
+      plugins: [
+        RegionsPlugin.create({
+          regions: []
+        })
+      ]
     })
+    const wsResions = Object.values(ws.regions.list)
+    console.log(wsResions)
+    setRegions(wsResions)
     wsRef.current = ws
     if (objectURL) {
       ws.load(objectURL)
