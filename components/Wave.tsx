@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import WaveSurfer from 'wavesurfer.js'
 import RegionsPlugin, { Region } from 'wavesurfer.js/src/plugin/regions'
 import { Button } from "./ui/button";
+import { Regions } from "./Regions";
 
 type Props = {
   objectURL: string,
@@ -22,19 +23,30 @@ export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
       height,
       plugins: [
         RegionsPlugin.create({
-          regions: []
+          regions: [],
+          dragSelection: true,
         })
       ]
     })
-    const wsResions = Object.values(ws.regions.list)
-    console.log(wsResions)
-    setRegions(wsResions)
+
+    // regionsが追加されたら、ws.regions.listを更新する
+    ws.on('region-update-end', () => {
+      setRegions(Object.values(ws.regions.list))
+    })
+    ws.on('region-removed', () => {
+      setRegions(Object.values(ws.regions.list))
+    })
+
     wsRef.current = ws
     if (objectURL) {
       ws.load(objectURL)
     }
 
-  return () => ws.destroy()
+  return () => {
+    // 全てのイベントをunsubしてwsをdesttroy
+    ws.unAll()
+    ws.destroy()
+  }
   }, [objectURL, height])
 
   const handleClick = () => {
@@ -46,6 +58,7 @@ export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
     <div className='w-full'>
       <div ref={waveformRef} />
       <Button onClick={handleClick}>再生/停止</Button>
+      <Regions regions={regions} />
     </div>
   )
 })
