@@ -1,7 +1,10 @@
 import {
   LucideProps,
   Moon,
+  Pause,
+  Play,
   SunMedium,
+  Trash2,
   Twitter,
   type Icon as LucideIcon,
 } from "lucide-react"
@@ -28,4 +31,7 @@ export const Icons = {
       ></path>
     </svg>
   ),
+  play: Play,
+  pause: Pause,
+  trash: Trash2,
 }
