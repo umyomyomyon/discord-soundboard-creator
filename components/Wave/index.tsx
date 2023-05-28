@@ -5,6 +5,7 @@ import RegionsPlugin, { Region } from "wavesurfer.js/src/plugin/regions"
 import { cutMp3 } from "@/lib/ffmpeg"
 
 import { Regions } from "../Regions"
+import { Icons } from "../icons"
 import { Button } from "../ui/button"
 
 type Props = {
@@ -16,6 +17,7 @@ const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
   const waveformRef = useRef<HTMLDivElement>(null)
   const wsRef = useRef<WaveSurfer | null>(null)
   const [regions, setRegions] = useState<Region[]>([])
+  const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
     if (!waveformRef.current) return
@@ -39,6 +41,9 @@ const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
     ws.on("region-removed", () => {
       setRegions(Object.values(ws.regions.list))
     })
+    ws.on("finish", () => {
+      setIsPlaying(false)
+    })
 
     wsRef.current = ws
     if (objectURL) {
@@ -54,7 +59,13 @@ const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
 
   const handleClick = () => {
     if (!wsRef.current) return
+    setIsPlaying(!isPlaying)
     wsRef.current.playPause()
+  }
+
+  const handleClear = () => {
+    if (!wsRef.current) return
+    wsRef.current.clearRegions()
   }
 
   const handleDownload = async (region: Region) => {
@@ -76,9 +87,14 @@ const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
   }
 
   return (
-    <div className="w-full">
+    <div className="flex w-full flex-col gap-4">
       <div ref={waveformRef} />
-      <Button onClick={handleClick}>再生/停止</Button>
+      <div className="flex gap-4">
+        <Button onClick={handleClick}>
+          {isPlaying ? <Icons.pause /> : <Icons.play />}
+        </Button>
+        {regions.length > 0 && <Button onClick={handleClear}>クリア</Button>}
+      </div>
       <Regions regions={regions} handleDownload={handleDownload} />
     </div>
   )
