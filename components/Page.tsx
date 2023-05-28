@@ -1,10 +1,12 @@
 "use client"
 
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useState } from "react"
+import dynamic from "next/dynamic"
 import { FileWithPath } from "react-dropzone"
 
 import { FileDropZone } from "./FileDropZone"
-import { Wave } from "./Wave"
+
+const Wave = dynamic(() => import("./Wave"), { ssr: false })
 
 const Page: React.FC = () => {
   const [filename, setFilename] = useState<string | null>(null)

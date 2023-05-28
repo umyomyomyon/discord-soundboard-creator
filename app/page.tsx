@@ -1,6 +1,4 @@
-import dynamic from 'next/dynamic'
-
-const Page = dynamic(() => import('@/components/Page'), {ssr: false})
+import Page from "@/components/Page"
 
 export default function IndexPage() {
   return (

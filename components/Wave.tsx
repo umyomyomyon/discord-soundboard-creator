@@ -12,7 +12,7 @@ type Props = {
   height: number
 }
 
-export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
+const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
   const waveformRef = useRef<HTMLDivElement>(null)
   const wsRef = useRef<WaveSurfer | null>(null)
   const [regions, setRegions] = useState<Region[]>([])
@@ -84,3 +84,5 @@ export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
   )
 })
 Wave.displayName = "Wave"
+
+export default Wave
