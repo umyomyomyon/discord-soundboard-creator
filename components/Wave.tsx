@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react"
 import WaveSurfer from "wavesurfer.js"
 import RegionsPlugin, { Region } from "wavesurfer.js/src/plugin/regions"
 
+import { cutMp3 } from "@/lib/ffmpeg"
+
 import { Regions } from "./Regions"
 import { Button } from "./ui/button"
 
@@ -55,11 +57,29 @@ export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
     wsRef.current.playPause()
   }
 
+  const handleDownload = async (region: Region) => {
+    const srcBlob = await (await fetch(objectURL)).blob()
+    const binary = new Uint8Array(await srcBlob.arrayBuffer())
+    const cutResult = await cutMp3(
+      binary,
+      region.start,
+      region.end,
+      "hoge.mp3",
+      "cut.mp3"
+    )
+    const resultBlob = new Blob([cutResult], { type: "audio/mp3" })
+    const link = document.createElement("a")
+    link.download = "cut.mp3"
+    link.href = URL.createObjectURL(resultBlob)
+    link.click()
+    URL.revokeObjectURL(link.href)
+  }
+
   return (
     <div className="w-full">
       <div ref={waveformRef} />
       <Button onClick={handleClick}>再生/停止</Button>
-      <Regions regions={regions} />
+      <Regions regions={regions} handleDownload={handleDownload} />
     </div>
   )
 })
