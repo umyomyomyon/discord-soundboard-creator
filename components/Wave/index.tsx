@@ -4,8 +4,8 @@ import RegionsPlugin, { Region } from "wavesurfer.js/src/plugin/regions"
 
 import { cutMp3 } from "@/lib/ffmpeg"
 
-import { Regions } from "./Regions"
-import { Button } from "./ui/button"
+import { Regions } from "../Regions"
+import { Button } from "../ui/button"
 
 type Props = {
   objectURL: string
