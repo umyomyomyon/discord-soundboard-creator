@@ -1,6 +1,7 @@
-import React from "react";
-import { Region } from 'wavesurfer.js/src/plugin/regions'
-import { Button } from "./ui/button";
+import React from "react"
+import { Region } from "wavesurfer.js/src/plugin/regions"
+
+import { Button } from "./ui/button"
 
 type RegionsProps = {
   regions: Region[]
@@ -21,4 +22,4 @@ export const Regions: React.FC<RegionsProps> = React.memo(({ regions }) => {
     </ul>
   )
 })
-Regions.displayName = 'Regions'
+Regions.displayName = "Regions"

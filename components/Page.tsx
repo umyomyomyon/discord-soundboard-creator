@@ -1,9 +1,10 @@
-'use client'
+"use client"
 
-import React, { useCallback, useRef, useState } from 'react'
-import { FileWithPath } from 'react-dropzone'
-import { Wave } from './Wave'
-import { FileDropZone } from './FileDropZone'
+import React, { useCallback, useRef, useState } from "react"
+import { FileWithPath } from "react-dropzone"
+
+import { FileDropZone } from "./FileDropZone"
+import { Wave } from "./Wave"
 
 const Page: React.FC = () => {
   const [filename, setFilename] = useState<string | null>(null)
@@ -22,11 +23,9 @@ const Page: React.FC = () => {
     <>
       <FileDropZone onDrop={onDrop} />
       {objectURL && <Wave objectURL={objectURL} height={waveHeight} />}
-      <div className='h-6'>
-        {filename && <p>{filename}</p>}
-      </div>
+      <div className="h-6">{filename && <p>{filename}</p>}</div>
     </>
   )
 }
 
-export default Page;
+export default Page
