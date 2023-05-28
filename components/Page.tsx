@@ -6,6 +6,7 @@ import { FileWithPath } from "react-dropzone"
 
 import { FileDropZone } from "./FileDropZone"
 import { Loading } from "./Wave/Loading"
+import Typography from "./ui/typography"
 
 const Wave = dynamic(() => import("./Wave"), {
   ssr: false,
@@ -28,8 +29,10 @@ const Page: React.FC = () => {
   return (
     <>
       <FileDropZone onDrop={onDrop} />
+      <div className="h-6">
+        {filename && <Typography.h2>{filename}</Typography.h2>}
+      </div>
       {objectURL && <Wave objectURL={objectURL} height={waveHeight} />}
-      <div className="h-6">{filename && <p>{filename}</p>}</div>
     </>
   )
 }

@@ -3,7 +3,8 @@ import { Region } from "wavesurfer.js/src/plugin/regions"
 
 import { Icons } from "./icons"
 import { Button } from "./ui/button"
-import { Card, CardContent, CardHeader } from "./ui/card"
+import { Card, CardContent } from "./ui/card"
+import Typography from "./ui/typography"
 
 type RegionsProps = {
   regions: Region[]
@@ -22,9 +23,11 @@ export const Regions: React.FC<RegionsProps> = React.memo(
             <Card>
               <CardContent className="flex flex-col gap-4">
                 <div className="mt-6">
-                  <p>start: {trimNum(region.start)}s</p>
-                  <p>end: {trimNum(region.end)}s</p>
-                  <p>total: {trimNum(region.end - region.start)}s</p>
+                  <Typography.p>start: {trimNum(region.start)}s</Typography.p>
+                  <Typography.p>end: {trimNum(region.end)}s</Typography.p>
+                  <Typography.p>
+                    total: {trimNum(region.end - region.start)}s
+                  </Typography.p>
                 </div>
                 <div className="flex gap-4">
                   <Button onClick={() => region.play()}>
