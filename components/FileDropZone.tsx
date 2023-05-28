@@ -1,8 +1,6 @@
 import React from "react"
 import { FileWithPath, useDropzone } from "react-dropzone"
 
-import Typography from "./ui/typography"
-
 type DropZoneProps = {
   onDrop: (acceptedFiles: FileWithPath[]) => void
 }
@@ -20,10 +18,10 @@ export const FileDropZone: React.FC<DropZoneProps> = React.memo(
       >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <Typography.p>Drop the files here ...</Typography.p>
+          <p>Drop the files here ...</p>
         ) : (
           // eslint-disable-next-line react/no-unescaped-entities
-          <Typography.p>ここにmp3ファイルをドラッグ＆ドロップ</Typography.p>
+          <p>ここにmp3ファイルをドラッグ＆ドロップ</p>
         )}
       </div>
     )
