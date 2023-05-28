@@ -4,15 +4,15 @@ import RegionsPlugin, { Region } from "wavesurfer.js/src/plugin/regions"
 
 import { cutMp3 } from "@/lib/ffmpeg"
 
-import { Regions } from "./Regions"
-import { Button } from "./ui/button"
+import { Regions } from "../Regions"
+import { Button } from "../ui/button"
 
 type Props = {
   objectURL: string
   height: number
 }
 
-export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
+const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
   const waveformRef = useRef<HTMLDivElement>(null)
   const wsRef = useRef<WaveSurfer | null>(null)
   const [regions, setRegions] = useState<Region[]>([])
@@ -84,3 +84,5 @@ export const Wave: React.FC<Props> = React.memo(({ objectURL, height }) => {
   )
 })
 Wave.displayName = "Wave"
+
+export default Wave
